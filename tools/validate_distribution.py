@@ -16,12 +16,16 @@ PLUGIN = ROOT / "plugins" / "ai-literature-workflow"
 EXPECTED_SKILLS = {
     "literature-workflow-orchestrator",
     "research-scope-builder",
+    "search-protocol-builder",
     "corpus-screener",
+    "corpus-risk-probe",
     "paper-evidence-reader",
     "evidence-quality-judge",
     "literature-synthesizer",
     "related-work-writer",
     "citation-and-venue-auditor",
+    "consistency-auditor",
+    "completeness-auditor",
     "literature-final-auditor",
 }
 TEXT_SUFFIXES = {".json", ".jsonc", ".md", ".py", ".ps1", ".sh", ".txt", ".yml", ".yaml"}

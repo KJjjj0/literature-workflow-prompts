@@ -59,6 +59,16 @@ EVIDENCE_FIELDS = [
     "claims_supported",
 ]
 
+CLAIM_FIELDS = [
+    "claim_id",
+    "claim_text",
+    "support_type",
+    "paper_id",
+    "bib_key",
+    "evidence_locator",
+    "strength",
+]
+
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Initialize a gated literature project.")
@@ -218,6 +228,7 @@ def main() -> int:
     write_csv(root / "search" / "screening.csv", SCREENING_FIELDS, [])
     write_csv(root / "corpus" / "index.csv", CORPUS_FIELDS, [])
     write_csv(root / "analysis" / "evidence_matrix.csv", EVIDENCE_FIELDS, [])
+    write_csv(root / "analysis" / "claim_evidence_map.csv", CLAIM_FIELDS, [])
     write_if_missing(root / "search" / "queries.jsonl", "")
 
     print(

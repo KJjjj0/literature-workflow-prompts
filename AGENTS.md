@@ -15,12 +15,15 @@
 - `G0 RESEARCH_SCOPE_FROZEN`: question, scope, success criteria, and output form are approved.
 - `G1 SEARCH_PROTOCOL_APPROVED`: sources, queries, date range, and screening rules are approved.
 - `G2 CORPUS_FROZEN`: raw results, deduplication, screening, and the included corpus are complete.
+- `G2.5 CORPUS_RISK_SCREENED`: source, metadata, recency, and screening risks are probed.
 - `G3 EVIDENCE_EXTRACTED`: every included paper has a structured evidence card.
 - `G4 QUALITY_JUDGED`: methods and evidence quality are assessed against claim scope.
 - `G5 SYNTHESIS_APPROVED`: themes, method evolution, disagreements, and gaps are approved.
 - `G6 DRAFT_READY`: writing exists and every substantive claim maps to evidence.
 - `G7 CITATIONS_VERIFIED`: bibliography, DOI metadata, and venue requirements pass.
-- `G8 FINAL_AUDIT_PASSED`: consistency, citation, claim, and final audits pass.
+- `G7.5 CONSISTENCY_AUDITED`: paper identities and evidence agree across artifacts.
+- `G7.8 COMPLETENESS_AUDITED`: required evidence, synthesis, and writing artifacts exist.
+- `G8 FINAL_AUDIT_PASSED`: consistency, completeness, citation, and quality audits pass.
 
 # Writing Rules
 

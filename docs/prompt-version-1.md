@@ -110,7 +110,8 @@ Google Scholar 仅作为后备来源
 我确认 corpus/index.csv 中的纳入和排除决定。
 
 请记录为 corpus_freeze，验证 G2。
-随后只进入 G3，逐篇生成证据卡和 evidence_matrix.csv。
+随后自动运行 corpus-risk-probe 并通过 G2.5，
+再进入 G3，逐篇生成证据卡、evidence_matrix.csv 和 claim_evidence_map.csv。
 ```
 
 ## 六、G3：论文精读与证据提取
@@ -204,6 +205,14 @@ G3 没有人工审批门禁，完成后验证并报告结果。
 3. 预印本和正式发表版本必须区分；
 4. 在 G7 全部通过前不要进入最终审计。
 ```
+
+G7 通过后依次自动运行：
+
+- `consistency-auditor`，写入 `audit/consistency.json`；
+- `completeness-auditor`，写入 `audit/completeness.json`；
+- `literature-final-auditor`，写入 `audit/final_audit.json`。
+
+这三个机械审计阶段不需要额外批准。
 
 ## 十一、G8：最终提交批准
 

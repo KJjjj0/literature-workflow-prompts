@@ -1,6 +1,6 @@
 ---
 name: paper-evidence-reader
-description: Read included papers and extract structured, provenance-linked evidence cards for an AI literature project. Use at G3 after the corpus is frozen; do not use to synthesize whole literatures.
+description: Read included papers and extract structured, provenance-linked evidence cards for an AI literature project. Use at G3 after corpus risk screening; do not use to synthesize whole literatures.
 ---
 
 # Purpose
@@ -30,7 +30,7 @@ Do not convert benchmark gains into general superiority claims. Do not invent mi
 
 # Evidence Matrix
 
-Maintain one row per included paper in `analysis/evidence_matrix.csv`. Keep `paper_id` and `bib_key` aligned with `corpus/index.csv`.
+Maintain one row per included paper in `analysis/evidence_matrix.csv` and maintain `analysis/claim_evidence_map.csv` from project claim IDs to paper IDs and bibliography keys. Keep identifiers aligned with `corpus/index.csv`.
 
 When every included paper has a complete card and matrix row, validate G3 with `--write`. G3 has no human decision gate.
 

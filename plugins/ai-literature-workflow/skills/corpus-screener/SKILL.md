@@ -45,7 +45,7 @@ Record title and abstract decisions in `search/screening.csv` with `include`, `e
 
 Build `corpus/index.csv` only from included papers. Each row requires a stable `paper_id` and planned `bib_key`.
 
-After full-text screening is complete and the user explicitly approves the included set, append `corpus_freeze`. Validate G2 with `--write`.
+After full-text screening is complete and the user explicitly approves the included set, append `corpus_freeze`. Validate G2 with `--write`, then run `corpus-risk-probe` for G2.5 before paper reading.
 
 # Boundaries
 

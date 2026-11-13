@@ -48,6 +48,14 @@ ALLOWED_BY_GATE = {
         "citation_export": False,
         "final_export": False,
     },
+    "G2.5": {
+        "search": True,
+        "reading": True,
+        "synthesis": False,
+        "drafting": False,
+        "citation_export": False,
+        "final_export": False,
+    },
     "G3": {
         "search": True,
         "reading": True,
@@ -81,6 +89,22 @@ ALLOWED_BY_GATE = {
         "final_export": False,
     },
     "G7": {
+        "search": True,
+        "reading": True,
+        "synthesis": True,
+        "drafting": True,
+        "citation_export": True,
+        "final_export": False,
+    },
+    "G7.5": {
+        "search": True,
+        "reading": True,
+        "synthesis": True,
+        "drafting": True,
+        "citation_export": True,
+        "final_export": False,
+    },
+    "G7.8": {
         "search": True,
         "reading": True,
         "synthesis": True,
@@ -221,6 +245,20 @@ def validate_g2(project: Path) -> list[str]:
     return errors
 
 
+def validate_g25(project: Path) -> list[str]:
+    path = project / "analysis" / "corpus_risk_report.json"
+    if not path.exists():
+        return [f"missing corpus risk report: {path}"]
+    try:
+        report = load_json(path, {})
+    except json.JSONDecodeError as exc:
+        return [f"invalid corpus risk report JSON: {exc}"]
+    status = str(report.get("status", "")).upper()
+    if status not in {"PASS", "CONDITIONAL"}:
+        return [f"corpus risk status must be PASS or CONDITIONAL: {status or 'missing'}"]
+    return []
+
+
 def validate_g3(project: Path) -> list[str]:
     corpus_errors, corpus_rows = require_csv_fields(
         project / "corpus" / "index.csv",
@@ -316,9 +354,35 @@ def validate_g7(project: Path) -> list[str]:
     return errors
 
 
+def validate_g75(project: Path) -> list[str]:
+    path = project / "audit" / "consistency.json"
+    if not path.exists():
+        return [f"missing consistency audit: {path}"]
+    try:
+        report = load_json(path, {})
+    except json.JSONDecodeError as exc:
+        return [f"invalid consistency audit JSON: {exc}"]
+    return [] if str(report.get("status", "")).upper() == "PASS" else ["consistency audit status must be PASS"]
+
+
+def validate_g78(project: Path) -> list[str]:
+    path = project / "audit" / "completeness.json"
+    if not path.exists():
+        return [f"missing completeness audit: {path}"]
+    try:
+        report = load_json(path, {})
+    except json.JSONDecodeError as exc:
+        return [f"invalid completeness audit JSON: {exc}"]
+    return [] if str(report.get("status", "")).upper() == "PASS" else ["completeness audit status must be PASS"]
+
+
 def validate_g8(project: Path) -> list[str]:
     errors: list[str] = []
-    for relative in ("audit/consistency.json", "audit/final_audit.json"):
+    for relative in (
+        "audit/consistency.json",
+        "audit/completeness.json",
+        "audit/final_audit.json",
+    ):
         path = project / relative
         if not path.exists():
             errors.append(f"missing audit: {path}")
@@ -338,11 +402,14 @@ VALIDATORS = {
     "G0": validate_g0,
     "G1": validate_g1,
     "G2": validate_g2,
+    "G2.5": validate_g25,
     "G3": validate_g3,
     "G4": validate_g4,
     "G5": validate_g5,
     "G6": validate_g6,
     "G7": validate_g7,
+    "G7.5": validate_g75,
+    "G7.8": validate_g78,
     "G8": validate_g8,
 }
 

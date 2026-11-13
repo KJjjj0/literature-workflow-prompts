@@ -30,13 +30,16 @@ python ../../scripts/validate_gate.py --project <project-root> --next
 Route exactly one next action:
 
 - G0 missing or failing -> `research-scope-builder`;
-- G1 missing or failing -> `research-scope-builder`;
+- G1 missing or failing -> `search-protocol-builder`;
 - G2 missing or failing -> `corpus-screener`;
+- G2.5 missing or failing -> `corpus-risk-probe`;
 - G3 missing or failing -> `paper-evidence-reader`;
 - G4 missing or failing -> `evidence-quality-judge`;
 - G5 missing or failing -> `literature-synthesizer`;
 - G6 missing or failing -> `related-work-writer`;
 - G7 missing or failing -> `citation-and-venue-auditor`;
+- G7.5 missing or failing -> `consistency-auditor`;
+- G7.8 missing or failing -> `completeness-auditor`;
 - G8 missing or failing -> `literature-final-auditor`;
 - all gates pass -> packaging may be proposed, but requires explicit user action.
 

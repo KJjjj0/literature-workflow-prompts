@@ -1,21 +1,76 @@
-# AI Literature Workflow Prompts
+# AI Literature Workflow for Codex
 
-Prompt templates for the `ai-literature-workflow` Codex plugin.
+An open-source, gate-driven literature research plugin for AI students and
+researchers using Codex.
 
-## Prompt Version 1
+The workflow enforces nine stages from research framing through final audit. It
+keeps human decisions in an append-only ledger, freezes the evidence corpus
+before writing, and verifies that manuscript citations belong to that corpus.
 
-- [提示词版本一.md](./提示词版本一.md)
+## Install
 
-The workflow follows G0 through G8 and stops at every human decision gate:
+```powershell
+codex plugin marketplace add KJjjj0/literature-workflow-prompts
+codex plugin add ai-literature-workflow@literature-workflow
+```
 
-1. research scope;
-2. search protocol;
-3. corpus freeze;
-4. evidence extraction;
-5. evidence quality and claim scope;
-6. synthesis;
-7. drafting;
-8. citation verification;
-9. final audit.
+Start a new Codex conversation after installation.
 
-Use these prompts in a new Codex conversation after installing the plugin.
+## Use
+
+```text
+$ai-literature-workflow:literature-workflow-orchestrator
+```
+
+Describe the research topic, target output, date range, source preferences, and
+expected corpus size. The orchestrator performs one valid gate at a time.
+
+See [Prompt Version 1](docs/prompt-version-1.md) for a complete starting
+prompt.
+
+## Workflow
+
+| Gate | Outcome |
+|---|---|
+| G0 | Research scope frozen |
+| G1 | Search protocol approved |
+| G2 | Corpus frozen |
+| G3 | Evidence extracted |
+| G4 | Evidence quality judged |
+| G5 | Synthesis approved |
+| G6 | Draft ready |
+| G7 | Citations verified |
+| G8 | Final audit passed |
+
+## Included Skills
+
+- `literature-workflow-orchestrator`
+- `research-scope-builder`
+- `corpus-screener`
+- `paper-evidence-reader`
+- `evidence-quality-judge`
+- `literature-synthesizer`
+- `related-work-writer`
+- `citation-and-venue-auditor`
+- `literature-final-auditor`
+
+## Security
+
+The bundled Python scripts run locally, use only the standard library, make no
+network requests, and perform no recursive deletion. External research adapters
+such as `paper-lookup` or `nature-reader` are optional and governed by their own
+policies.
+
+Read [SECURITY.md](SECURITY.md) and [PRIVACY.md](PRIVACY.md).
+
+## Development
+
+```powershell
+python -m pip install -r requirements-dev.txt
+python tools/validate_distribution.py
+python -B -m unittest discover -s plugins/ai-literature-workflow/tests -v
+```
+
+## License
+
+MIT. See [LICENSE](LICENSE).

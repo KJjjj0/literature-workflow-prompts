@@ -1,0 +1,20 @@
+{
+  "name": "literature-workflow",
+  "interface": {
+    "displayName": "AI Literature Workflow"
+  },
+  "plugins": [
+    {
+      "name": "ai-literature-workflow",
+      "source": {
+        "source": "local",
+        "path": "./plugins/ai-literature-workflow"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Education"
+    }
+  ]
+}

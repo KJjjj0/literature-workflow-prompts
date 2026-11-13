@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.0
+
+- Add portable root `skills/`, `references/`, and `scripts/` source tree.
+- Add standalone Codex, Claude Code, and OpenCode skill trees.
+- Add native Claude Code plugin and marketplace manifests.
+- Add OpenCode project configuration and global skills installation.
+- Add a non-destructive cross-host synchronization and drift checker.
+- Add cross-platform installers for plugin and project modes.
+
 ## 0.1.1
 
 - Add a nine-gate literature research workflow.

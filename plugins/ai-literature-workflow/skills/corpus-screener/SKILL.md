@@ -7,7 +7,7 @@ description: Execute and document literature searches, deduplicate candidates, a
 
 Convert the approved search plan into a reproducible candidate set and frozen corpus.
 
-Read `../../AGENTS.md`, [gate contract](../../references/gate-contract.md), [search policy](../../references/search-policy.md), and [evidence schema](../../references/evidence-schema.md).
+Read [workflow policy](../../references/workflow-policy.md), [gate contract](../../references/gate-contract.md), [search policy](../../references/search-policy.md), and [evidence schema](../../references/evidence-schema.md).
 
 # Search
 

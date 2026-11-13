@@ -8,6 +8,8 @@ from pathlib import Path
 
 import yaml
 
+from sync_hosts import HOST_ROOTS, compare_host
+
 
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN = ROOT / "plugins" / "ai-literature-workflow"
@@ -22,6 +24,8 @@ EXPECTED_SKILLS = {
     "citation-and-venue-auditor",
     "literature-final-auditor",
 }
+TEXT_SUFFIXES = {".json", ".jsonc", ".md", ".py", ".ps1", ".sh", ".txt", ".yml", ".yaml"}
+CODE_SUFFIXES = {".py", ".ps1", ".sh"}
 ANTHROPIC_AUTH_MARKER = "ANTHROPIC_" + "AUTH_TOKEN"
 SECRET_PATTERNS = (
     re.compile(r"sk-[A-Za-z0-9_-]{16,}"),
@@ -33,7 +37,7 @@ SECRET_PATTERNS = (
 )
 PERSONAL_PATH_PATTERNS = (
     re.compile("C:" + r"\\Users\\[^\\\s]+", re.IGNORECASE),
-    re.compile(r"/Users/[^/\s]+"),
+    re.compile("/" + r"Users/[^/\s]+"),
     re.compile("E:" + r"\\配置", re.IGNORECASE),
     re.compile("306" + "13"),
 )
@@ -48,6 +52,10 @@ DANGEROUS_COMMAND_PATTERNS = (
 def fail(message: str) -> None:
     print(f"FAIL: {message}", file=sys.stderr)
     raise SystemExit(1)
+
+
+def read_json(path: Path) -> dict[str, object]:
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def parse_frontmatter(path: Path) -> dict[str, object]:
@@ -65,30 +73,45 @@ def parse_frontmatter(path: Path) -> dict[str, object]:
 
 
 def main() -> int:
-    portable_manifest = json.loads((PLUGIN / "plugin.json").read_text(encoding="utf-8"))
-    codex_manifest = json.loads(
-        (PLUGIN / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8")
-    )
-    marketplace = json.loads(
-        (ROOT / ".agents" / "plugins" / "marketplace.json").read_text(encoding="utf-8")
-    )
+    portable_manifest = read_json(PLUGIN / "plugin.json")
+    codex_manifest = read_json(PLUGIN / ".codex-plugin" / "plugin.json")
+    claude_manifest = read_json(PLUGIN / ".claude-plugin" / "plugin.json")
+    codex_marketplace = read_json(ROOT / ".agents" / "plugins" / "marketplace.json")
+    claude_marketplace = read_json(ROOT / ".claude-plugin" / "marketplace.json")
+    opencode_config = read_json(ROOT / ".opencode" / "opencode.json")
+
+    versions = {
+        str(portable_manifest.get("version")),
+        str(codex_manifest.get("version")),
+        str(claude_manifest.get("version")),
+        str(claude_marketplace["plugins"][0].get("version")),
+    }
+    if len(versions) != 1:
+        fail(f"plugin versions differ: {sorted(versions)}")
+
     if portable_manifest.get("name") != "ai-literature-workflow":
         fail("portable plugin name mismatch")
     if codex_manifest.get("name") != "ai-literature-workflow":
         fail("Codex plugin name mismatch")
+    if claude_manifest.get("name") != "ai-literature-workflow":
+        fail("Claude plugin name mismatch")
     if codex_manifest.get("skills") != "./skills/":
         fail("Codex manifest must declare ./skills/")
-    if marketplace.get("name") != "literature-workflow":
-        fail("marketplace name mismatch")
-    entries = marketplace.get("plugins", [])
-    if len(entries) != 1 or entries[0].get("name") != "ai-literature-workflow":
-        fail("marketplace must expose exactly ai-literature-workflow")
+    if claude_manifest.get("skills") != "./skills/":
+        fail("Claude manifest must declare ./skills/")
+    if codex_marketplace.get("name") != "literature-workflow":
+        fail("Codex marketplace name mismatch")
+    if claude_marketplace.get("name") != "literature-workflow":
+        fail("Claude marketplace name mismatch")
+    if opencode_config.get("skills") != [".opencode/skills"]:
+        fail("OpenCode config must register .opencode/skills")
 
-    skill_dirs = sorted(path.name for path in (PLUGIN / "skills").iterdir() if path.is_dir())
+    skill_dirs = sorted(path.name for path in (ROOT / "skills").iterdir() if path.is_dir())
     if set(skill_dirs) != EXPECTED_SKILLS:
         fail(f"unexpected skill directories: {sorted(set(skill_dirs) ^ EXPECTED_SKILLS)}")
+
     names: set[str] = set()
-    for skill_dir in sorted((PLUGIN / "skills").iterdir()):
+    for skill_dir in sorted((ROOT / "skills").iterdir()):
         if not skill_dir.is_dir():
             continue
         manifest_path = skill_dir / "SKILL.md"
@@ -100,20 +123,34 @@ def main() -> int:
         if not str(data.get("description", "")).strip():
             fail(f"missing skill description: {skill_dir}")
         names.add(skill_dir.name)
-        text = manifest_path.read_text(encoding="utf-8")
-        for link in re.findall(r"\]\(([^)]+)\)", text):
+        for link in re.findall(r"\]\(([^)]+)\)", manifest_path.read_text(encoding="utf-8")):
             if link.startswith(("http://", "https://", "#")):
                 continue
-            target = (skill_dir / link).resolve()
-            if not target.exists():
+            if not (skill_dir / link).resolve().exists():
                 fail(f"broken skill link in {skill_dir.name}: {link}")
+
+    for host in HOST_ROOTS:
+        differences = compare_host(host)
+        if any(differences.values()):
+            fail(
+                f"host tree differs from canonical source: "
+                f"{host.relative_to(ROOT).as_posix()} {differences}"
+            )
+
+    for required in ("AGENTS.md", "CLAUDE.md", ".claude/settings.json", "install.ps1", "install.sh"):
+        if not (ROOT / required).is_file():
+            fail(f"missing distribution file: {required}")
 
     text_files = [
         path
-        for path in PLUGIN.rglob("*")
-        if path.is_file() and path.suffix.lower() in {".json", ".md", ".py", ".txt", ".yml", ".yaml"}
+        for path in ROOT.rglob("*")
+        if path.is_file()
+        and ".git" not in path.parts
+        and path.suffix.lower() in TEXT_SUFFIXES
     ]
     for path in text_files:
+        if path.is_symlink():
+            fail(f"symlink found in distribution: {path.relative_to(ROOT)}")
         text = path.read_text(encoding="utf-8")
         for pattern in SECRET_PATTERNS:
             if pattern.search(text):
@@ -121,13 +158,12 @@ def main() -> int:
         for pattern in PERSONAL_PATH_PATTERNS:
             if pattern.search(text):
                 fail(f"personal/local path in {path.relative_to(ROOT)}")
-        for pattern in DANGEROUS_COMMAND_PATTERNS:
-            if pattern.search(text):
-                fail(f"dangerous command pattern in {path.relative_to(ROOT)}")
-        if path.is_symlink():
-            fail(f"symlink found in distribution: {path.relative_to(ROOT)}")
+        if path.suffix.lower() in CODE_SUFFIXES:
+            for pattern in DANGEROUS_COMMAND_PATTERNS:
+                if pattern.search(text):
+                    fail(f"dangerous command pattern in {path.relative_to(ROOT)}")
 
-    for script in (PLUGIN / "scripts").glob("*.py"):
+    for script in list((ROOT / "scripts").glob("*.py")) + list((ROOT / "tools").glob("*.py")):
         ast.parse(script.read_text(encoding="utf-8"), filename=str(script))
 
     print(
@@ -135,8 +171,9 @@ def main() -> int:
             {
                 "status": "PASS",
                 "plugin": portable_manifest["name"],
-                "version": portable_manifest["version"],
+                "version": sorted(versions)[0],
                 "skills": len(names),
+                "host_trees": len(HOST_ROOTS),
                 "text_files_scanned": len(text_files),
             }
         )

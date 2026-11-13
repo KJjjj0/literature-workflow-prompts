@@ -28,6 +28,10 @@ that prints a fixed reminder.
 - Rejects paths that escape the project root through symlinks.
 - Writes only project scaffold and derived research artifacts selected by the
   user.
+- The cross-platform installer supports `--dry-run` and creates timestamped
+  backups instead of deleting conflicting destinations when `--force` is used.
+- Native installation delegates to the installed Codex or Claude CLI; OpenCode
+  and generic Agent Skills installation is a local file copy.
 
 ### External Skills and Data
 

@@ -7,7 +7,7 @@ description: Build and revise the research question and search protocol for an A
 
 Create the human-owned research frame and the reproducible search plan.
 
-Read `../../AGENTS.md`, [gate contract](../../references/gate-contract.md), [search policy](../../references/search-policy.md), and [writing policy](../../references/writing-policy.md).
+Read [workflow policy](../../references/workflow-policy.md), [gate contract](../../references/gate-contract.md), [search policy](../../references/search-policy.md), and [writing policy](../../references/writing-policy.md).
 
 # G0 Scope
 

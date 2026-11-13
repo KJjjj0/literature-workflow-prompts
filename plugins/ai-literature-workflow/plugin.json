@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "ai-literature-workflow",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "A gate-driven literature research workflow for AI graduate students, with provenance tracking, evidence extraction, synthesis, writing, citation verification, and final audit.",
   "author": {
     "name": "KJjjj0",

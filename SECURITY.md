@@ -18,6 +18,10 @@ private manuscripts, or sensitive research data in an issue.
 - Filesystem roots and protected system directories are rejected as project roots.
 - Distribution packaging rejects symlink traversal.
 - The session-start hook prints a fixed reminder and executes nothing else.
+- The cross-platform installer supports `--dry-run` and backs up conflicting
+  files before replacement when `--force` is explicitly supplied.
+- Native Codex and Claude installation invokes the already-installed host CLI;
+  OpenCode and generic installation only copies local skill trees.
 - Optional research adapters are not bundled and may have separate network and
   privacy behavior.
 

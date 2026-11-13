@@ -7,7 +7,7 @@ description: Inspect and route a gated AI literature-research project. Use for p
 
 Act as the state reader and scheduler. Do not perform searches, extract evidence, synthesize papers, or draft manuscript prose.
 
-Read `../../AGENTS.md`, [gate contract](../../references/gate-contract.md), and [gates.json](../../references/gates.json).
+Read [workflow policy](../../references/workflow-policy.md), [gate contract](../../references/gate-contract.md), and [gates.json](../../references/gates.json).
 
 # State Sources
 

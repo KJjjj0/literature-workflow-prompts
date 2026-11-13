@@ -1,6 +1,7 @@
 # AI Literature Workflow
 
-A skills-only Codex plugin for disciplined AI literature research.
+A skills-only literature research plugin for Codex, Claude Code, OpenCode, and
+compatible Agent Skills hosts.
 
 The workflow enforces nine gates from question framing to final audit. It keeps
 human decisions separate from AI-generated analysis and blocks manuscript
@@ -32,21 +33,44 @@ writing until the evidence corpus is frozen and judged.
 
 ## Install
 
-Clone this repository and add it as a local marketplace:
+Codex:
 
 ```powershell
-codex plugin marketplace add <path-to-repository>
+codex plugin marketplace add KJjjj0/literature-workflow-prompts@main
 codex plugin add ai-literature-workflow@literature-workflow
 ```
 
-Start a new Codex conversation after installation.
+Claude Code:
+
+```text
+/plugin marketplace add KJjjj0/literature-workflow-prompts
+/plugin install ai-literature-workflow@literature-workflow
+```
+
+OpenCode:
+
+```powershell
+pwsh ./install.ps1 -Target opencode -Mode plugin
+```
 
 ## Use
 
-Invoke the orchestrator explicitly:
+Codex:
 
 ```text
 $ai-literature-workflow:literature-workflow-orchestrator
+```
+
+Claude Code:
+
+```text
+/ai-literature-workflow:literature-workflow-orchestrator
+```
+
+OpenCode:
+
+```text
+@literature-workflow-orchestrator
 ```
 
 Then describe the research topic, target output, date range, source preferences,

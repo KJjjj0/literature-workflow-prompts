@@ -1,0 +1,92 @@
+{
+  "order": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5",
+    "G6",
+    "G7",
+    "G8"
+  ],
+  "gates": {
+    "G0": {
+      "name": "RESEARCH_SCOPE_FROZEN",
+      "decision": "scope_approval",
+      "required_files": [
+        "planning/question_card.md"
+      ],
+      "next_skill": "research-scope-builder"
+    },
+    "G1": {
+      "name": "SEARCH_PROTOCOL_APPROVED",
+      "decision": "search_protocol_approval",
+      "required_files": [
+        "search/search_protocol.md"
+      ],
+      "next_skill": "corpus-screener"
+    },
+    "G2": {
+      "name": "CORPUS_FROZEN",
+      "decision": "corpus_freeze",
+      "required_files": [
+        "search/raw_results.csv",
+        "search/screening.csv",
+        "corpus/index.csv"
+      ],
+      "next_skill": "paper-evidence-reader"
+    },
+    "G3": {
+      "name": "EVIDENCE_EXTRACTED",
+      "decision": null,
+      "required_files": [
+        "analysis/evidence_matrix.csv"
+      ],
+      "next_skill": "evidence-quality-judge"
+    },
+    "G4": {
+      "name": "QUALITY_JUDGED",
+      "decision": "quality_scope_approval",
+      "required_files": [
+        "analysis/quality_report.json"
+      ],
+      "next_skill": "literature-synthesizer"
+    },
+    "G5": {
+      "name": "SYNTHESIS_APPROVED",
+      "decision": "synthesis_approval",
+      "required_files": [
+        "analysis/gap_map.md",
+        "synthesis/review_outline.md"
+      ],
+      "next_skill": "related-work-writer"
+    },
+    "G6": {
+      "name": "DRAFT_READY",
+      "decision": null,
+      "required_files": [
+        "writing/related_work.md"
+      ],
+      "next_skill": "citation-and-venue-auditor"
+    },
+    "G7": {
+      "name": "CITATIONS_VERIFIED",
+      "decision": null,
+      "required_files": [
+        "references/references.bib",
+        "audit/citations.json"
+      ],
+      "next_skill": "literature-final-auditor"
+    },
+    "G8": {
+      "name": "FINAL_AUDIT_PASSED",
+      "decision": "submission_approval",
+      "required_files": [
+        "audit/consistency.json",
+        "audit/final_audit.json"
+      ],
+      "next_skill": null
+    }
+  }
+}

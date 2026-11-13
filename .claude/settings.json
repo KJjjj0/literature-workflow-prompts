@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "deny": [
+      "Write(**/planning/decisions.jsonl)",
+      "Edit(**/planning/decisions.jsonl)",
+      "Write(**/.env)",
+      "Edit(**/.env)",
+      "Bash(rm -rf:*)",
+      "Bash(git reset --hard:*)"
+    ],
+    "ask": [
+      "Bash(git push:*)",
+      "Bash(git commit --amend:*)",
+      "Write(**/corpus/index.csv)",
+      "Write(**/references/references.bib)",
+      "Write(**/writing/related_work.md)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '[ai-literature-workflow guardrails active] Human owns scope, inclusion standards, claim scope, and venue; do not write before the corpus and evidence gates pass.' >&2"
+          }
+        ]
+      }
+    ]
+  }
+}

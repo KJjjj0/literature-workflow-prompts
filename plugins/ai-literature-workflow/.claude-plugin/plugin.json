@@ -1,0 +1,21 @@
+{
+  "name": "ai-literature-workflow",
+  "version": "0.2.0",
+  "description": "A gated literature research workflow with human-owned scope and claim decisions, frozen evidence, traceable citations, and final audits.",
+  "author": {
+    "name": "KJjjj0",
+    "url": "https://github.com/KJjjj0"
+  },
+  "homepage": "https://github.com/KJjjj0/literature-workflow-prompts",
+  "repository": "https://github.com/KJjjj0/literature-workflow-prompts",
+  "license": "MIT",
+  "keywords": [
+    "literature-review",
+    "research-workflow",
+    "citations",
+    "evidence-audit",
+    "claude-code"
+  ],
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json"
+}

@@ -24,19 +24,96 @@ GATE_ORDER: list[str] = GATE_DEFINITIONS["order"]
 GATES: dict[str, dict[str, Any]] = GATE_DEFINITIONS["gates"]
 
 ALLOWED_BY_GATE = {
-    "G0": {"search": False, "reading": False, "synthesis": False, "drafting": False, "citation_export": False, "final_export": False},
-    "G1": {"search": True, "reading": False, "synthesis": False, "drafting": False, "citation_export": False, "final_export": False},
-    "G2": {"search": True, "reading": True, "synthesis": False, "drafting": False, "citation_export": False, "final_export": False},
-    "G3": {"search": True, "reading": True, "synthesis": False, "drafting": False, "citation_export": False, "final_export": False},
-    "G4": {"search": True, "reading": True, "synthesis": True, "drafting": False, "citation_export": False, "final_export": False},
-    "G5": {"search": True, "reading": True, "synthesis": True, "drafting": True, "citation_export": False, "final_export": False},
-    "G6": {"search": True, "reading": True, "synthesis": True, "drafting": True, "citation_export": True, "final_export": False},
-    "G7": {"search": True, "reading": True, "synthesis": True, "drafting": True, "citation_export": True, "final_export": False},
-    "G8": {"search": True, "reading": True, "synthesis": True, "drafting": True, "citation_export": True, "final_export": True},
+    "G0": {
+        "search": False,
+        "reading": False,
+        "synthesis": False,
+        "drafting": False,
+        "citation_export": False,
+        "final_export": False,
+    },
+    "G1": {
+        "search": True,
+        "reading": False,
+        "synthesis": False,
+        "drafting": False,
+        "citation_export": False,
+        "final_export": False,
+    },
+    "G2": {
+        "search": True,
+        "reading": True,
+        "synthesis": False,
+        "drafting": False,
+        "citation_export": False,
+        "final_export": False,
+    },
+    "G3": {
+        "search": True,
+        "reading": True,
+        "synthesis": False,
+        "drafting": False,
+        "citation_export": False,
+        "final_export": False,
+    },
+    "G4": {
+        "search": True,
+        "reading": True,
+        "synthesis": True,
+        "drafting": False,
+        "citation_export": False,
+        "final_export": False,
+    },
+    "G5": {
+        "search": True,
+        "reading": True,
+        "synthesis": True,
+        "drafting": True,
+        "citation_export": False,
+        "final_export": False,
+    },
+    "G6": {
+        "search": True,
+        "reading": True,
+        "synthesis": True,
+        "drafting": True,
+        "citation_export": True,
+        "final_export": False,
+    },
+    "G7": {
+        "search": True,
+        "reading": True,
+        "synthesis": True,
+        "drafting": True,
+        "citation_export": True,
+        "final_export": False,
+    },
+    "G8": {
+        "search": True,
+        "reading": True,
+        "synthesis": True,
+        "drafting": True,
+        "citation_export": True,
+        "final_export": True,
+    },
 }
 
 EVIDENCE_FIELDS = {
-    "paper_id", "title", "year", "venue", "status", "problem", "method", "datasets", "baselines", "metrics", "main_results", "limitations", "claims_supported", "quality", "provenance",
+    "paper_id",
+    "title",
+    "year",
+    "venue",
+    "status",
+    "problem",
+    "method",
+    "datasets",
+    "baselines",
+    "metrics",
+    "main_results",
+    "limitations",
+    "claims_supported",
+    "quality",
+    "provenance",
 }
 
 
@@ -66,33 +143,70 @@ def require_decision(project: Path, decision_type: str | None) -> list[str]:
     return []
 
 
-def require_csv_fields(path: Path, required: set[str], minimum_rows: int = 0) -> tuple[list[str], list[dict[str, str]]]:
+def require_csv_fields(
+    path: Path,
+    required: set[str],
+    minimum_rows: int = 0,
+) -> tuple[list[str], list[dict[str, str]]]:
     if not path.exists():
         return [f"missing CSV: {path}"], []
     fields, rows = read_csv(path)
-    errors = [f"missing CSV field {field}: {path}" for field in required if field not in fields]
+    errors = [
+        f"missing CSV field {field}: {path}"
+        for field in required
+        if field not in fields
+    ]
     if len(rows) < minimum_rows:
         errors.append(f"expected at least {minimum_rows} row(s): {path}")
     return errors, rows
 
 
 def validate_g0(project: Path) -> list[str]:
-    errors = require_text(project / "planning" / "question_card.md", ("## Research question", "## Scope", "## Success criteria", "## Output form"))
+    errors = require_text(
+        project / "planning" / "question_card.md",
+        (
+            "## Research question",
+            "## Scope",
+            "## Success criteria",
+            "## Output form",
+        ),
+    )
     errors += require_decision(project, "scope_approval")
     return errors
 
 
 def validate_g1(project: Path) -> list[str]:
-    errors = require_text(project / "search" / "search_protocol.md", ("## Sources", "## Queries", "## Date range", "## Inclusion criteria", "## Exclusion criteria"))
+    errors = require_text(
+        project / "search" / "search_protocol.md",
+        (
+            "## Sources",
+            "## Queries",
+            "## Date range",
+            "## Inclusion criteria",
+            "## Exclusion criteria",
+        ),
+    )
     errors += require_decision(project, "search_protocol_approval")
     return errors
 
 
 def validate_g2(project: Path) -> list[str]:
     errors: list[str] = []
-    raw_errors, raw_rows = require_csv_fields(project / "search" / "raw_results.csv", {"paper_id", "title", "source", "retrieved_at"}, minimum_rows=1)
-    screening_errors, screening_rows = require_csv_fields(project / "search" / "screening.csv", {"paper_id", "decision", "reason"}, minimum_rows=1)
-    corpus_errors, corpus_rows = require_csv_fields(project / "corpus" / "index.csv", {"paper_id", "title", "bib_key", "status"}, minimum_rows=1)
+    raw_errors, raw_rows = require_csv_fields(
+        project / "search" / "raw_results.csv",
+        {"paper_id", "title", "source", "retrieved_at"},
+        minimum_rows=1,
+    )
+    screening_errors, screening_rows = require_csv_fields(
+        project / "search" / "screening.csv",
+        {"paper_id", "decision", "reason"},
+        minimum_rows=1,
+    )
+    corpus_errors, corpus_rows = require_csv_fields(
+        project / "corpus" / "index.csv",
+        {"paper_id", "title", "bib_key", "status"},
+        minimum_rows=1,
+    )
     errors += raw_errors + screening_errors + corpus_errors
     if raw_rows and len(screening_rows) == 0:
         errors.append("screening.csv must contain screening decisions")
@@ -108,8 +222,16 @@ def validate_g2(project: Path) -> list[str]:
 
 
 def validate_g3(project: Path) -> list[str]:
-    corpus_errors, corpus_rows = require_csv_fields(project / "corpus" / "index.csv", {"paper_id", "title", "bib_key", "status"}, minimum_rows=1)
-    matrix_errors, matrix_rows = require_csv_fields(project / "analysis" / "evidence_matrix.csv", {"paper_id", "bib_key", "method", "main_results", "quality"}, minimum_rows=1)
+    corpus_errors, corpus_rows = require_csv_fields(
+        project / "corpus" / "index.csv",
+        {"paper_id", "title", "bib_key", "status"},
+        minimum_rows=1,
+    )
+    matrix_errors, matrix_rows = require_csv_fields(
+        project / "analysis" / "evidence_matrix.csv",
+        {"paper_id", "bib_key", "method", "main_results", "quality"},
+        minimum_rows=1,
+    )
     errors = corpus_errors + matrix_errors
     matrix_ids = {row.get("paper_id", "").strip() for row in matrix_rows}
     for row in corpus_rows:
@@ -212,14 +334,26 @@ def validate_g8(project: Path) -> list[str]:
     return errors
 
 
-VALIDATORS = {"G0": validate_g0, "G1": validate_g1, "G2": validate_g2, "G3": validate_g3, "G4": validate_g4, "G5": validate_g5, "G6": validate_g6, "G7": validate_g7, "G8": validate_g8}
+VALIDATORS = {
+    "G0": validate_g0,
+    "G1": validate_g1,
+    "G2": validate_g2,
+    "G3": validate_g3,
+    "G4": validate_g4,
+    "G5": validate_g5,
+    "G6": validate_g6,
+    "G7": validate_g7,
+    "G8": validate_g8,
+}
 
 
 def evaluate_through(project: Path, target: str) -> tuple[list[str], str | None]:
+    completed: list[str] = []
     for gate_id in GATE_ORDER:
         errors = VALIDATORS[gate_id](project)
         if errors:
             return errors, gate_id
+        completed.append(gate_id)
         if gate_id == target:
             return [], gate_id
     return [], target
@@ -232,16 +366,30 @@ def update_manifest(project: Path, passed_gate: str) -> None:
     next_index = GATE_ORDER.index(passed_gate) + 1
     next_gate = GATE_ORDER[next_index] if next_index < len(GATE_ORDER) else "DONE"
     next_skill = GATES[passed_gate].get("next_skill")
-    manifest.update({
-        "current_gate": next_gate,
-        "last_passed_gate": passed_gate,
-        "status": "workflow_complete" if next_gate == "DONE" else f"awaiting_{GATES[next_gate]['name'].casefold()}",
-        "completed_gates": completed,
-        "allowed": ALLOWED_BY_GATE[passed_gate],
-        "blockers": [] if next_gate == "DONE" else [f"next gate: {next_gate}"],
-        "next_action": {"owner": "workflow", "skill": next_skill, "reason": "workflow complete" if not next_skill else f"advance {next_gate} with {next_skill}"},
-        "updated_at": datetime.now(timezone.utc).isoformat(),
-    })
+    manifest.update(
+        {
+            "current_gate": next_gate,
+            "last_passed_gate": passed_gate,
+            "status": (
+                "workflow_complete"
+                if next_gate == "DONE"
+                else f"awaiting_{GATES[next_gate]['name'].casefold()}"
+            ),
+            "completed_gates": completed,
+            "allowed": ALLOWED_BY_GATE[passed_gate],
+            "blockers": [] if next_gate == "DONE" else [f"next gate: {next_gate}"],
+            "next_action": {
+                "owner": "workflow",
+                "skill": next_skill,
+                "reason": (
+                    "workflow complete"
+                    if not next_skill
+                    else f"advance {next_gate} with {next_skill}"
+                ),
+            },
+            "updated_at": datetime.now(timezone.utc).isoformat(),
+        }
+    )
     write_json(path, manifest)
 
 
@@ -251,9 +399,19 @@ def main() -> int:
     manifest_path = project / "planning" / "manifest.json"
     if not manifest_path.exists():
         raise SystemExit(f"Missing project manifest: {manifest_path}")
-    target = "G8" if args.next or not args.gate else args.gate
+
+    if args.next or not args.gate:
+        target = "G8"
+    else:
+        target = args.gate
+
     errors, failed_gate = evaluate_through(project, target)
-    result: dict[str, Any] = {"status": "FAIL" if errors else "PASS", "target_gate": target, "failed_gate": failed_gate if errors else None, "errors": errors}
+    result: dict[str, Any] = {
+        "status": "FAIL" if errors else "PASS",
+        "target_gate": target,
+        "failed_gate": failed_gate if errors else None,
+        "errors": errors,
+    }
     if not errors:
         result["next_action"] = GATES[target].get("next_skill")
         if args.write:

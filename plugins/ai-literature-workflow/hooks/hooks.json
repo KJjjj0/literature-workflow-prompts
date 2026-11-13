@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '[ai-literature-workflow guardrails active] Human owns scope, inclusion standards, claim scope, and venue; do not write before the corpus and evidence gates pass.' >&2"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "name": "ai-literature-workflow",
+  "version": "0.1.1",
+  "description": "A gate-driven literature research workflow for AI graduate students.",
+  "author": {
+    "name": "KJjjj0"
+  },
+  "homepage": "https://github.com/KJjjj0/literature-workflow-prompts",
+  "repository": "https://github.com/KJjjj0/literature-workflow-prompts",
+  "license": "MIT",
+  "keywords": [
+    "literature-review",
+    "research-workflow",
+    "citations",
+    "evidence-audit",
+    "codex"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "AI Literature Workflow",
+    "shortDescription": "Gate-driven literature research and writing.",
+    "longDescription": "Run a disciplined literature workflow from question framing and search design through evidence extraction, synthesis, writing, citation verification, and final audit.",
+    "developerName": "KJjjj0",
+    "category": "Education",
+    "capabilities": [
+      "Analysis",
+      "Research",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Initialize a literature research project and route the first gate.",
+      "Inspect this literature project and identify the next blocked gate.",
+      "Audit this manuscript against the approved evidence corpus."
+    ],
+    "brandColor": "#2F6F5E"
+  }
+}

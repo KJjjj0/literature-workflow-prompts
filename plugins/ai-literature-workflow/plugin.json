@@ -1,0 +1,20 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "ai-literature-workflow",
+  "version": "0.1.1",
+  "description": "A gate-driven literature research workflow for AI graduate students, with provenance tracking, evidence extraction, synthesis, writing, citation verification, and final audit.",
+  "author": {
+    "name": "KJjjj0",
+    "url": "https://github.com/KJjjj0"
+  },
+  "homepage": "https://github.com/KJjjj0/literature-workflow-prompts",
+  "repository": "https://github.com/KJjjj0/literature-workflow-prompts",
+  "license": "MIT",
+  "keywords": [
+    "literature-review",
+    "research-workflow",
+    "citations",
+    "evidence-audit",
+    "codex"
+  ]
+}

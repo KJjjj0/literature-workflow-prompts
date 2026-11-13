@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.1
+
+- Make approval clicks and short positive replies sufficient human decisions.
+- Make free-text rationale optional for approval decisions.
+- Require rationale only for rejection, competing-option choices, or changes to
+  an approved scope or claim boundary.
+- Remove repeated rationale prompts from gate transitions.
+
 ## 0.2.0
 
 - Add portable root `skills/`, `references/`, and `scripts/` source tree.

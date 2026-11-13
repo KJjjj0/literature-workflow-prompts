@@ -10,7 +10,7 @@ before writing, and verifies that manuscript citations belong to that corpus.
 ## Install
 
 ```powershell
-codex plugin marketplace add KJjjj0/literature-workflow-prompts
+codex plugin marketplace add KJjjj0/literature-workflow-prompts@main
 codex plugin add ai-literature-workflow@literature-workflow
 ```
 
@@ -70,6 +70,9 @@ python -m pip install -r requirements-dev.txt
 python tools/validate_distribution.py
 python -B -m unittest discover -s plugins/ai-literature-workflow/tests -v
 ```
+
+The GitHub Actions workflow template is available at `ci/validate.yml` for
+repositories that grant workflow write permissions.
 
 ## License
 

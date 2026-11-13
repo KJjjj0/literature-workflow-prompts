@@ -44,11 +44,19 @@ Do not invoke several judgment-bearing stages speculatively.
 
 # Human Decisions
 
-The project manifest is not a substitute for the human ledger. Record a decision only after the user has explicitly supplied the choice and rationale:
+The project manifest is not a substitute for the human ledger. An explicit user reply such as `批准`, `同意`, `认可`, or `OK` is sufficient approval. Record it immediately:
 
 ```powershell
-python ../../scripts/log_decision.py --project <project-root> --type <decision-type> --choice <choice> --rationale <user-rationale> --evidence <path>
+python ../../scripts/log_decision.py --project <project-root> --type <decision-type> --choice approve --evidence <path> [--rationale <optional-user-note>]
 ```
+
+The script records a factual standardized approval note when the user gives no explanation. Do not ask the user to repeat an approval merely to obtain free-text rationale.
+
+Ask for a short rationale only when:
+
+- the user rejects or chooses between competing options;
+- the user changes an approved scope or claim boundary;
+- two alternatives have a material trade-off the user must own.
 
 Never invent or strengthen a rationale.
 

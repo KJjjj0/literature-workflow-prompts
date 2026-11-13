@@ -23,7 +23,7 @@ Complete `planning/question_card.md` with:
 
 Use `hypothesis-generation` when available to make claims and expected evidence testable.
 
-After the user explicitly approves the question and scope, append a `scope_approval` decision. Then validate G0 with `--write`.
+When the user replies `批准`, `同意`, `认可`, or `OK`, append a `scope_approval` decision using the standardized approval record. Do not request a separate free-text reason. Then validate G0 with `--write`.
 
 # G1 Search Protocol
 
@@ -38,7 +38,7 @@ Complete `search/search_protocol.md` with:
 
 Do not run a broad search before the protocol is approved. Avoid treating Google Scholar as the only source.
 
-After the user explicitly approves the protocol, append `search_protocol_approval`. Validate G1 with `--write`.
+When the user approves the protocol, append `search_protocol_approval` using the standardized approval record. Do not ask for a repeated explanation. Validate G1 with `--write`.
 
 # Boundaries
 

@@ -100,6 +100,28 @@ def run(command: list[str], dry_run: bool, optional: bool = False) -> bool:
     return result.returncode == 0
 
 
+def capture_json(command: list[str]) -> list[dict[str, object]]:
+    resolved = resolve_command(command)
+    result = subprocess.run(
+        resolved,
+        check=False,
+        text=True,
+        capture_output=True,
+        encoding="utf-8",
+        errors="replace",
+    )
+    if result.returncode != 0:
+        return []
+    text = result.stdout.strip()
+    if not text:
+        return []
+    try:
+        value = json.loads(text)
+    except json.JSONDecodeError:
+        return []
+    return value if isinstance(value, list) else []
+
+
 def install_codex_plugin(dry_run: bool) -> None:
     run(["codex", "plugin", "marketplace", "add", str(ROOT)], dry_run)
     run(
@@ -109,21 +131,20 @@ def install_codex_plugin(dry_run: bool) -> None:
 
 
 def install_claude_plugin(dry_run: bool, scope: str) -> None:
-    run(
-        ["claude", "plugin", "marketplace", "add", str(ROOT), "--scope", scope],
-        dry_run,
+    marketplaces = capture_json(["claude", "plugin", "marketplace", "list", "--json"])
+    marketplace_exists = any(
+        item.get("name") == MARKETPLACE_NAME for item in marketplaces
     )
-    run(
-        [
-            "claude",
-            "plugin",
-            "install",
-            f"{PLUGIN_NAME}@{MARKETPLACE_NAME}",
-            "--scope",
-            scope,
-        ],
-        dry_run,
-    )
+    if marketplace_exists:
+        run(["claude", "plugin", "marketplace", "update", MARKETPLACE_NAME], dry_run)
+    else:
+        run(["claude", "plugin", "marketplace", "add", str(ROOT), "--scope", scope], dry_run)
+
+    plugins = capture_json(["claude", "plugin", "list", "--json"])
+    plugin_id = f"{PLUGIN_NAME}@{MARKETPLACE_NAME}"
+    plugin_exists = any(item.get("id") == plugin_id for item in plugins)
+    action = "update" if plugin_exists else "install"
+    run(["claude", "plugin", action, plugin_id, "--scope", scope], dry_run)
 
 
 def install_opencode_global(

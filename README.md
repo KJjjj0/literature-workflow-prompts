@@ -70,6 +70,10 @@ OpenCode and generic Agent Skills hosts:
 Describe the research topic, target output, date range, source preferences, and
 expected corpus size. The orchestrator performs one valid gate at a time.
 
+An explicit `批准`, `同意`, `认可`, or `OK` reply is enough to approve a normal
+gate. Free-text rationale is optional; it is requested only for rejection,
+competing-option choices, or changes to an approved scope.
+
 See [Prompt Version 1](docs/prompt-version-1.md) for a complete starting
 prompt.
 

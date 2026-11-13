@@ -61,8 +61,8 @@ class WorkflowIntegrationTest(unittest.TestCase):
     def tearDown(self) -> None:
         self.temp.cleanup()
 
-    def log(self, decision_type: str, rationale: str) -> None:
-        run_script(
+    def log(self, decision_type: str, rationale: str | None = None) -> None:
+        args = [
             "log_decision.py",
             "--project",
             str(self.project),
@@ -70,9 +70,10 @@ class WorkflowIntegrationTest(unittest.TestCase):
             decision_type,
             "--choice",
             "approve",
-            "--rationale",
-            rationale,
-        )
+        ]
+        if rationale:
+            args.extend(["--rationale", rationale])
+        run_script(*args)
 
     def validate(self, gate: str) -> None:
         run_script(
@@ -197,7 +198,7 @@ A thesis-related-work section.
 """,
             encoding="utf-8",
         )
-        self.log("scope_approval", "The question and thesis relation match my research plan.")
+        self.log("scope_approval")
         self.validate("G0")
 
         (self.project / "search" / "search_protocol.md").write_text(

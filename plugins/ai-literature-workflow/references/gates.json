@@ -3,11 +3,14 @@
     "G0",
     "G1",
     "G2",
+    "G2.5",
     "G3",
     "G4",
     "G5",
     "G6",
     "G7",
+    "G7.5",
+    "G7.8",
     "G8"
   ],
   "gates": {
@@ -34,6 +37,14 @@
         "search/raw_results.csv",
         "search/screening.csv",
         "corpus/index.csv"
+      ],
+      "next_skill": "corpus-risk-probe"
+    },
+    "G2.5": {
+      "name": "CORPUS_RISK_SCREENED",
+      "decision": null,
+      "required_files": [
+        "analysis/corpus_risk_report.json"
       ],
       "next_skill": "paper-evidence-reader"
     },
@@ -77,6 +88,22 @@
         "references/references.bib",
         "audit/citations.json"
       ],
+      "next_skill": "consistency-auditor"
+    },
+    "G7.5": {
+      "name": "CONSISTENCY_AUDITED",
+      "decision": null,
+      "required_files": [
+        "audit/consistency.json"
+      ],
+      "next_skill": "completeness-auditor"
+    },
+    "G7.8": {
+      "name": "COMPLETENESS_AUDITED",
+      "decision": null,
+      "required_files": [
+        "audit/completeness.json"
+      ],
       "next_skill": "literature-final-auditor"
     },
     "G8": {
@@ -84,6 +111,7 @@
       "decision": "submission_approval",
       "required_files": [
         "audit/consistency.json",
+        "audit/completeness.json",
         "audit/final_audit.json"
       ],
       "next_skill": null

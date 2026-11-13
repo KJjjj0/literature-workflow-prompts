@@ -289,6 +289,13 @@ Title and abstract screening followed by full-text verification.
         write_csv(self.project / "corpus" / "index.csv", corpus_fields, [corpus_row])
         self.log("corpus_freeze", "The included paper directly matches the approved scope.")
         self.validate("G2")
+        run_script(
+            "audit_corpus_coverage.py",
+            "--project",
+            str(self.project),
+            "--write",
+        )
+        self.validate("G2.5")
 
         card = {
             "paper_id": paper_id,
@@ -340,6 +347,29 @@ Title and abstract screening followed by full-text verification.
                     "limitations": card["limitations"][0],
                     "quality": "medium",
                     "claims_supported": "C1",
+                }
+            ],
+        )
+        write_csv(
+            self.project / "analysis" / "claim_evidence_map.csv",
+            [
+                "claim_id",
+                "claim_text",
+                "support_type",
+                "paper_id",
+                "bib_key",
+                "evidence_locator",
+                "strength",
+            ],
+            [
+                {
+                    "claim_id": "C1",
+                    "claim_text": "Structured sparsity reduces latency.",
+                    "support_type": "supports",
+                    "paper_id": paper_id,
+                    "bib_key": "smith2025efficient",
+                    "evidence_locator": "Results table 1",
+                    "strength": "medium",
                 }
             ],
         )
@@ -399,9 +429,33 @@ Title and abstract screening followed by full-text verification.
         )
         self.validate("G7")
 
-        write_json(self.project / "audit" / "consistency.json", {"status": "PASS"})
-        write_json(self.project / "audit" / "final_audit.json", {"status": "PASS"})
+        run_script(
+            "audit_research.py",
+            "--project",
+            str(self.project),
+            "--layer",
+            "consistency",
+            "--write",
+        )
+        self.validate("G7.5")
+        run_script(
+            "audit_research.py",
+            "--project",
+            str(self.project),
+            "--layer",
+            "completeness",
+            "--write",
+        )
+        self.validate("G7.8")
         self.log("submission_approval", "I approve the final claim scope for this package.")
+        run_script(
+            "audit_research.py",
+            "--project",
+            str(self.project),
+            "--layer",
+            "final",
+            "--write",
+        )
         self.validate("G8")
 
         manifest = json.loads(

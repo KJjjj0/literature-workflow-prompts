@@ -19,6 +19,9 @@
 | OpenCode | `.opencode/skills` | `.opencode/opencode.json` |
 | 通用 Agent Skills | `skills` | 直接复制到宿主技能目录 |
 
+工作流在语料冻结后自动检查来源多样性、年份覆盖、标识符完整性和筛选风险；
+引用完成后依次运行一致性审计、完整性审计和最终质量审计。
+
 ## 安装
 
 Codex：

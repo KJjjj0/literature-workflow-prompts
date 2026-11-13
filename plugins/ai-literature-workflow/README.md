@@ -12,23 +12,30 @@ writing until the evidence corpus is frozen and judged.
 1. `G0`: research scope frozen.
 2. `G1`: search protocol approved.
 3. `G2`: corpus frozen.
-4. `G3`: evidence extracted.
-5. `G4`: evidence quality and claim scope judged.
-6. `G5`: synthesis and research gaps approved.
-7. `G6`: draft ready.
-8. `G7`: citations and venue formatting verified.
-9. `G8`: final audit passed.
+4. `G2.5`: corpus coverage risk screened.
+5. `G3`: evidence extracted.
+6. `G4`: evidence quality and claim scope judged.
+7. `G5`: synthesis and research gaps approved.
+8. `G6`: draft ready.
+9. `G7`: citations and venue formatting verified.
+10. `G7.5`: cross-file consistency audited.
+11. `G7.8`: workflow completeness audited.
+12. `G8`: final quality audit passed.
 
 ## Included Skills
 
 - `literature-workflow-orchestrator`
 - `research-scope-builder`
+- `search-protocol-builder`
 - `corpus-screener`
+- `corpus-risk-probe`
 - `paper-evidence-reader`
 - `evidence-quality-judge`
 - `literature-synthesizer`
 - `related-work-writer`
 - `citation-and-venue-auditor`
+- `consistency-auditor`
+- `completeness-auditor`
 - `literature-final-auditor`
 
 ## Install

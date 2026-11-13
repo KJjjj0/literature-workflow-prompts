@@ -20,7 +20,9 @@ PACKAGE_PATHS = (
     "search/screening.csv",
     "corpus/index.csv",
     "corpus/notes",
+    "analysis/corpus_risk_report.json",
     "analysis/evidence_matrix.csv",
+    "analysis/claim_evidence_map.csv",
     "analysis/quality_report.json",
     "analysis/gap_map.md",
     "synthesis/review_outline.md",
@@ -28,6 +30,7 @@ PACKAGE_PATHS = (
     "references/references.bib",
     "audit/citations.json",
     "audit/consistency.json",
+    "audit/completeness.json",
     "audit/final_audit.json",
 )
 

@@ -11,7 +11,7 @@
       "name": "ai-literature-workflow",
       "source": "./plugins/ai-literature-workflow",
       "description": "A gated literature research workflow with human-owned decisions, frozen evidence, and final audits.",
-      "version": "0.2.1",
+      "version": "0.3.0",
       "author": {
         "name": "KJjjj0"
       },

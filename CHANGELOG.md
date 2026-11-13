@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0
+
+- Split search protocol design from research scope definition.
+- Add corpus coverage and risk probing before paper reading.
+- Add claim-evidence mapping.
+- Add independent consistency, completeness, and final quality audits.
+- Keep ordinary approvals one-click and rationale-optional.
+
 ## 0.2.1
 
 - Make approval clicks and short positive replies sufficient human decisions.

@@ -84,23 +84,30 @@ prompt.
 | G0 | Research scope frozen |
 | G1 | Search protocol approved |
 | G2 | Corpus frozen |
+| G2.5 | Corpus coverage risk screened |
 | G3 | Evidence extracted |
 | G4 | Evidence quality judged |
 | G5 | Synthesis approved |
 | G6 | Draft ready |
 | G7 | Citations verified |
+| G7.5 | Cross-file consistency audited |
+| G7.8 | Workflow completeness audited |
 | G8 | Final audit passed |
 
 ## Included Skills
 
 - `literature-workflow-orchestrator`
 - `research-scope-builder`
+- `search-protocol-builder`
 - `corpus-screener`
+- `corpus-risk-probe`
 - `paper-evidence-reader`
 - `evidence-quality-judge`
 - `literature-synthesizer`
 - `related-work-writer`
 - `citation-and-venue-auditor`
+- `consistency-auditor`
+- `completeness-auditor`
 - `literature-final-auditor`
 
 ## Security
